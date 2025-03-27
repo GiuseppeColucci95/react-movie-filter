@@ -24,40 +24,41 @@ function App() {
 
     console.log("Changed genre!", genre);
     setFilteredFilms(films.filter(film => (film.genre.toLowerCase() === genre.toLowerCase() || genre === '') && (film.title.toLowerCase().includes(search.toLowerCase()))));
-
   }, [genre, search, films]);
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log("Submit pressed", newMovieTitle, newMovieGenre);
 
-    if (newMovieTitle && newMovieGenre) {
+    if (!(newMovieTitle && newMovieGenre)) {
+      alert('Make sure to insert genre and title of your movie!');
+    } else {
 
+      const newMovie = {
+        title: newMovieTitle,
+        genre: newMovieGenre
+      }
+
+      setFilms([...films, newMovie]);
+      setNewMovieTitle('');
     }
-
-    const newMovie = {
-      title: newMovieTitle,
-      genre: newMovieGenre
-    }
-
-    setFilms([...films, newMovie]);
-
-    setNewMovieTitle('');
   }
 
 
   //return here
   return (
     <>
-      <div className="container text-center py-3">
+      <header className="bg-warning py-3">
+        <h1 className="text-center">Choose a Movie!</h1>
+      </header>
 
-        <h1>Choose a Movie!</h1>
+      <div className="container text-center py-3">
 
         <section>
 
           <div id="navbar" className="d-flex align-items-center justify-content-between gap-5">
 
-            <select onChange={(e) => setGenre(e.target.value)} className="my-3 p-1" name="genre" id="genre">
+            <select onChange={(e) => setGenre(e.target.value)} className="border-2 border-warning my-3 p-1" name="genre" id="genre">
               <option value="">Select a genre</option>
               <option value="Thriller">Thriller</option>
               <option value="Fantascienza">Fantascienza</option>
@@ -65,7 +66,12 @@ function App() {
               <option value="Azione">Azione</option>
             </select>
 
-            <input className="ps-2" type="text" placeholder="Search a movie..." value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input type="text"
+              className="form-control w-25 border-2 border-warning"
+              name="title"
+              id="title"
+              aria-describedby="titleHelper"
+              placeholder="Search movie here..." value={search} onChange={(e) => setSearch(e.target.value)} />
 
           </div>
 
@@ -73,7 +79,7 @@ function App() {
             {
               filteredFilms.map(film => (
                 <div key={film.title} className="col-4">
-                  <div className="card p-3">
+                  <div className="card border-2 border-warning p-3">
                     <h3 className="m-0">{film.title}</h3>
                     <p className="m-0">{film.genre}</p>
                   </div>
@@ -82,8 +88,8 @@ function App() {
             }
           </div>
 
-          <div className="add mt-5">
-            <div className="card">
+          <div id="add" className="mt-5">
+            <div className="card border-2 border-warning">
 
               <h5 className="m-0 p-3">Add a new movie!</h5>
 
@@ -91,7 +97,7 @@ function App() {
 
                 <form onSubmit={handleSubmit} className="d-flex align-items-center justify-content-center gap-3">
                   <input type="text"
-                    className="form-control w-50"
+                    className="form-control w-50 border-2 border-warning"
                     name="title"
                     id="title"
                     aria-describedby="titleHelper"
@@ -99,7 +105,7 @@ function App() {
                     value={newMovieTitle}
                     onChange={(e) => setNewMovieTitle(e.target.value)} />
 
-                  <select onChange={(e) => setNewMovieGenre(e.target.value)} className="my-3 p-1" name="genre" id="genre">
+                  <select onChange={(e) => setNewMovieGenre(e.target.value)} className="border-2 border-warning my-3 p-1" name="genre" id="genre">
                     <option value="">Select a genre</option>
                     <option value="Thriller">Thriller</option>
                     <option value="Fantascienza">Fantascienza</option>
@@ -107,7 +113,7 @@ function App() {
                     <option value="Azione">Azione</option>
                   </select>
 
-                  <button className="btn btn-primary" type="submit">Add Movie</button>
+                  <button className="btn btn-warning" type="submit">Add Movie</button>
                 </form>
               </div>
 
@@ -116,7 +122,7 @@ function App() {
 
         </section>
 
-      </div>
+      </div >
     </>
   )
 }
