@@ -16,20 +16,33 @@ function App() {
   const [genre, setGenre] = useState('');
   const [filteredFilms, setFilteredFilms] = useState(films);
   const [search, setSearch] = useState('');
-  const [newMovie, setNewMovie] = useState({});
+  const [newMovieTitle, setNewMovieTitle] = useState('');
+  const [newMovieGenre, setNewMovieGenre] = useState('');
+
 
   useEffect(() => {
 
     console.log("Changed genre!", genre);
     setFilteredFilms(films.filter(film => (film.genre.toLowerCase() === genre.toLowerCase() || genre === '') && (film.title.toLowerCase().includes(search.toLowerCase()))));
 
-  }, [genre, search]);
+  }, [genre, search, films]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("Submit pressed", newMovie);
+    console.log("Submit pressed", newMovieTitle, newMovieGenre);
 
-    setNewMovie('');
+    if (newMovieTitle && newMovieGenre) {
+
+    }
+
+    const newMovie = {
+      title: newMovieTitle,
+      genre: newMovieGenre
+    }
+
+    setFilms([...films, newMovie]);
+
+    setNewMovieTitle('');
   }
 
 
@@ -83,10 +96,10 @@ function App() {
                     id="title"
                     aria-describedby="titleHelper"
                     placeholder="Insert title here..."
-                    value={newMovie}
-                    onChange={(e) => setNewMovie(e.target.value)} />
+                    value={newMovieTitle}
+                    onChange={(e) => setNewMovieTitle(e.target.value)} />
 
-                  <select onChange={(e) => setNewMovie()} className="my-3 p-1" name="genre" id="genre">
+                  <select onChange={(e) => setNewMovieGenre(e.target.value)} className="my-3 p-1" name="genre" id="genre">
                     <option value="">Select a genre</option>
                     <option value="Thriller">Thriller</option>
                     <option value="Fantascienza">Fantascienza</option>
