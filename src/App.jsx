@@ -16,6 +16,7 @@ function App() {
   const [genre, setGenre] = useState('');
   const [filteredFilms, setFilteredFilms] = useState(films);
   const [search, setSearch] = useState('');
+  const [newMovie, setNewMovie] = useState({});
 
   useEffect(() => {
 
@@ -23,6 +24,13 @@ function App() {
     setFilteredFilms(films.filter(film => (film.genre.toLowerCase() === genre.toLowerCase() || genre === '') && (film.title.toLowerCase().includes(search.toLowerCase()))));
 
   }, [genre, search]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("Submit pressed", newMovie);
+
+    setNewMovie('');
+  }
 
 
   //return here
@@ -34,7 +42,7 @@ function App() {
 
         <section>
 
-          <div className="d-flex align-items-center justify-content-between gap-5">
+          <div id="navbar" className="d-flex align-items-center justify-content-between gap-5">
 
             <select onChange={(e) => setGenre(e.target.value)} className="my-3 p-1" name="genre" id="genre">
               <option value="">Select a genre</option>
@@ -59,6 +67,38 @@ function App() {
                 </div>
               ))
             }
+          </div>
+
+          <div className="add mt-5">
+            <div className="card">
+
+              <h5 className="m-0 p-3">Add a new movie!</h5>
+
+              <div className="mb-3">
+
+                <form onSubmit={handleSubmit} className="d-flex align-items-center justify-content-center gap-3">
+                  <input type="text"
+                    className="form-control w-50"
+                    name="title"
+                    id="title"
+                    aria-describedby="titleHelper"
+                    placeholder="Insert title here..."
+                    value={newMovie}
+                    onChange={(e) => setNewMovie(e.target.value)} />
+
+                  <select onChange={(e) => setNewMovie()} className="my-3 p-1" name="genre" id="genre">
+                    <option value="">Select a genre</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Fantascienza">Fantascienza</option>
+                    <option value="Romantico">Romantico</option>
+                    <option value="Azione">Azione</option>
+                  </select>
+
+                  <button className="btn btn-primary" type="submit">Add Movie</button>
+                </form>
+              </div>
+
+            </div>
           </div>
 
         </section>
