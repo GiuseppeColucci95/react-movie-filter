@@ -15,13 +15,14 @@ function App() {
   const [films, setFilms] = useState(data);
   const [genre, setGenre] = useState('');
   const [filteredFilms, setFilteredFilms] = useState(films);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
 
     console.log("Changed genre!", genre);
-    setFilteredFilms(films.filter(film => film.genre.toLowerCase() === genre.toLowerCase() || genre === ''));
+    setFilteredFilms(films.filter(film => (film.genre.toLowerCase() === genre.toLowerCase() || genre === '') && (film.title.toLowerCase().includes(search.toLowerCase()))));
 
-  }, [genre]);
+  }, [genre, search]);
 
 
   //return here
@@ -33,13 +34,19 @@ function App() {
 
         <section>
 
-          <select onChange={(e) => setGenre(e.target.value)} className="my-3" name="genre" id="genre">
-            <option value="">Select a genre</option>
-            <option value="Thriller">Thriller</option>
-            <option value="Fantascienza">Fantascienza</option>
-            <option value="Romantico">Romantico</option>
-            <option value="Azione">Azione</option>
-          </select>
+          <div className="d-flex align-items-center justify-content-between gap-5">
+
+            <select onChange={(e) => setGenre(e.target.value)} className="my-3 p-1" name="genre" id="genre">
+              <option value="">Select a genre</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Fantascienza">Fantascienza</option>
+              <option value="Romantico">Romantico</option>
+              <option value="Azione">Azione</option>
+            </select>
+
+            <input className="ps-2" type="text" placeholder="Search a movie..." value={search} onChange={(e) => setSearch(e.target.value)} />
+
+          </div>
 
           <div className="row d-flex row-gap-3">
             {
